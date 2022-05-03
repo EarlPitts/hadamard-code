@@ -26,10 +26,14 @@ def decode_text(c_msg):
     """
     return "".join(map(bin_to_ascii, map(decode, c_msg)))
 
-### Hadamard Code implementations ###
+### Hadamard Code implementation
 
 def hadamard(size):
-    return hadamard_matrix(size)
+    """Creates a size x size Hadamard matrix using the Kronecker product"""
+    if size == 2:
+        return hadamard_matrix(2)
+    h = hadamard(size/2)
+    return block_matrix(2,2,[h,h,h,-h])
 
 def max_index(v):
     """Returns the index with of the highest value in some vector"""
@@ -89,7 +93,7 @@ def decode(r_msg):
     """
     c_msg = correct_error(r_msg)
 
-    U, info_set = decoder_matrix(generator(log(len(r_msg),2)))
+    U, info_set = decoder_matrix(generator(log(len(r_msg), 2)))
     cc = vector(GF(2), [c_msg[i] for i in info_set])
     return cc * U
 
