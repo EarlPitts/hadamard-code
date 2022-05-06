@@ -1,4 +1,6 @@
 from itertools import product
+from functools import reduce
+from operator import add
 
 ### Helpers for demo
 
@@ -10,7 +12,7 @@ def bin_to_ascii(b):
     Convert b to an ascii char
     b is represented as a vector of bits
     """
-    return chr(int("".join(list(map(str, b))), 2))
+    return chr(int(reduce(add, (list(map(str, b)))), 2))
 
 def encode_text(text):
     """
@@ -24,7 +26,7 @@ def decode_text(c_msg):
     """
     Decodes the given coded message, and returns the original text
     """
-    return "".join(map(bin_to_ascii, map(decode, c_msg)))
+    return reduce(add, (map(bin_to_ascii, map(decode, c_msg))))
 
 ### Hadamard Code implementation
 
